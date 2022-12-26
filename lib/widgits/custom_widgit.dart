@@ -94,9 +94,13 @@ Widget noteItem() {
 }
 
 Widget notesListView() {
-  return ListView.builder(
-      itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: noteItem(),
-          ));
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 16.0),
+    child: ListView.builder(
+        padding: EdgeInsets.zero,
+        itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: noteItem(),
+            )),
+  );
 }
