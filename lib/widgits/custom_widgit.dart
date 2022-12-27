@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/views/edit_note_view.dart';
 
 Widget notesViewBody() {
   return Padding(
@@ -8,87 +9,94 @@ Widget notesViewBody() {
         const SizedBox(
           height: 50,
         ),
-        customAppBar(),
+        customAppBar(title: "Note", icon: Icons.search),
         Expanded(child: notesListView())
       ],
     ),
   );
 }
 
-Widget customAppBar() {
+Widget customAppBar({required String title, icon}) {
   return Row(
     children: [
-      const Text(
-        "Notes",
-        style: TextStyle(fontSize: 28),
+      Text(
+        title,
+        style: const TextStyle(fontSize: 28),
       ),
       const Spacer(),
-      customSearchIcon(),
+      customSearchIcon(icon),
     ],
   );
 }
 
-Widget customSearchIcon() {
+Widget customSearchIcon(IconData icon) {
   return Container(
     height: 46,
     width: 46,
     decoration: BoxDecoration(
         color: Colors.white.withOpacity(.05),
         borderRadius: BorderRadius.circular(16)),
-    child: const Center(
+    child: Center(
       child: Icon(
-        Icons.search,
+        icon,
         size: 28,
       ),
     ),
   );
 }
 
-Widget noteItem() {
-  return Container(
-    padding: const EdgeInsets.only(left: 16, top: 24, bottom: 24),
-    decoration: BoxDecoration(
-        color: const Color(0xff537D8D),
-        borderRadius: BorderRadius.circular(16)),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        ListTile(
-          title: const Text(
-            "Flutter tips",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 26,
-            ),
-          ),
-          trailing: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.black,
-                size: 30,
-              )),
-          subtitle: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Text(
-              "Build your career with tharwat samy",
+Widget noteItem(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return const EditNoteView();
+      }));
+    },
+    child: Container(
+      padding: const EdgeInsets.only(left: 16, top: 24, bottom: 24),
+      decoration: BoxDecoration(
+          color: const Color(0xff537D8D),
+          borderRadius: BorderRadius.circular(16)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          ListTile(
+            title: const Text(
+              "Flutter tips",
               style: TextStyle(
-                fontSize: 18,
-                color: Colors.black.withOpacity(.4),
+                color: Colors.black,
+                fontSize: 26,
+              ),
+            ),
+            trailing: IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.black,
+                  size: 30,
+                )),
+            subtitle: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Text(
+                "Build your career with tharwat samy",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black.withOpacity(.4),
+                ),
               ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            "May 22 , 2022",
-            style: TextStyle(
-              color: Colors.black.withOpacity(.4),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Text(
+              "May 22 , 2022",
+              style: TextStyle(
+                color: Colors.black.withOpacity(.4),
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     ),
   );
 }
@@ -100,7 +108,7 @@ Widget notesListView() {
         padding: EdgeInsets.zero,
         itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: noteItem(),
+              child: noteItem(context),
             )),
   );
 }
