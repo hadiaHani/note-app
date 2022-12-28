@@ -36,7 +36,7 @@ class CustomBottomSheet extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SingleChildScrollView(
-        child: BlocConsumer(
+        child: BlocConsumer<AddNoteCubit, AddNoteState>(
           listener: (context, state) {
             if (state is AddNoteFauiler) {
               debugPrint("error is ${state.errMessage}");
