@@ -5,7 +5,6 @@ class CustomButton extends StatelessWidget {
   const CustomButton({super.key, this.onTap, this.isLoading = false});
 
   final void Function()? onTap;
-
   final bool isLoading;
   @override
   Widget build(BuildContext context) {
