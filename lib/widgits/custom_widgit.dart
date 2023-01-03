@@ -27,7 +27,7 @@ class _NotesViewBodyState extends State<NotesViewBody> {
           const SizedBox(
             height: 50,
           ),
-          customAppBar(title: "Note", icon: Icons.search),
+          customAppBar(title: "Note", icon: Icons.search, onPressed: () {}),
           Expanded(child: notesListView())
         ],
       ),
@@ -35,7 +35,8 @@ class _NotesViewBodyState extends State<NotesViewBody> {
   }
 }
 
-Widget customAppBar({required String title, icon}) {
+Widget customAppBar(
+    {required String title, icon, required void Function()? onPressed}) {
   return Row(
     children: [
       Text(
@@ -43,12 +44,13 @@ Widget customAppBar({required String title, icon}) {
         style: const TextStyle(fontSize: 28),
       ),
       const Spacer(),
-      customSearchIcon(icon),
+      customIcon(icon: icon, onPressed: onPressed),
     ],
   );
 }
 
-Widget customSearchIcon(IconData icon) {
+Widget customIcon(
+    {required IconData icon, required void Function()? onPressed}) {
   return Container(
     height: 46,
     width: 46,
@@ -56,10 +58,12 @@ Widget customSearchIcon(IconData icon) {
         color: Colors.white.withOpacity(.05),
         borderRadius: BorderRadius.circular(16)),
     child: Center(
-      child: Icon(
-        icon,
-        size: 28,
-      ),
+      child: IconButton(
+          icon: Icon(
+            icon,
+            size: 28,
+          ),
+          onPressed: onPressed),
     ),
   );
 }
@@ -68,7 +72,9 @@ Widget noteItem(BuildContext context, NoteModel note) {
   return GestureDetector(
     onTap: () {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return const EditNoteView();
+        return EditNoteView(
+          note: note,
+        );
       }));
     },
     child: Container(
