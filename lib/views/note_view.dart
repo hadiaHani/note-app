@@ -104,11 +104,11 @@ class _AddNoteFormState extends State<AddNoteForm> {
             },
           ),
           const SizedBox(
-            height: 30,
+            height: 32,
           ),
           const ColorsListView(),
           const SizedBox(
-            height: 10,
+            height: 32,
           ),
           BlocBuilder<AddNoteCubit, AddNoteState>(
             builder: (context, state) => CustomButton(
@@ -144,20 +144,45 @@ class _AddNoteFormState extends State<AddNoteForm> {
 }
 
 class ColorsItem extends StatelessWidget {
-  const ColorsItem({Key? key}) : super(key: key);
+  const ColorsItem({Key? key, required this.isActive, required this.color})
+      : super(key: key);
 
+  final bool isActive;
+  final Color color;
   @override
   Widget build(BuildContext context) {
-    return const CircleAvatar(
-      backgroundColor: Colors.blue,
-      radius: 38,
-    );
+    return isActive
+        ? CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: 38,
+            child: CircleAvatar(
+              backgroundColor: color,
+              radius: 34,
+            ),
+          )
+        : CircleAvatar(
+            backgroundColor: color,
+            radius: 38,
+          );
   }
 }
 
-class ColorsListView extends StatelessWidget {
+class ColorsListView extends StatefulWidget {
   const ColorsListView({Key? key}) : super(key: key);
 
+  @override
+  State<ColorsListView> createState() => _ColorsListViewState();
+}
+
+class _ColorsListViewState extends State<ColorsListView> {
+  int currentIndex = 0;
+  List<Color> colors = [
+    const Color(0xff320D6D),
+    const Color(0xffFFBFB7),
+    const Color(0xffFFD447),
+    const Color(0xff700353),
+    const Color(0xffCB98BD),
+  ];
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -165,14 +190,23 @@ class ColorsListView extends StatelessWidget {
       child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-            return const ColorsItem();
+            return GestureDetector(
+              onTap: () {
+                currentIndex = index;
+                setState(() {});
+              },
+              child: ColorsItem(
+                isActive: currentIndex == index,
+                color: colors[index],
+              ),
+            );
           },
           separatorBuilder: (context, index) {
             return const SizedBox(
               width: 6,
             );
           },
-          itemCount: 10),
+          itemCount: colors.length),
     );
   }
 }
