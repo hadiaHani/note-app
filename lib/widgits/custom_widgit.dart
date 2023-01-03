@@ -64,7 +64,7 @@ Widget customSearchIcon(IconData icon) {
   );
 }
 
-Widget noteItem(BuildContext context) {
+Widget noteItem(BuildContext context, NoteModel note) {
   return GestureDetector(
     onTap: () {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -74,21 +74,24 @@ Widget noteItem(BuildContext context) {
     child: Container(
       padding: const EdgeInsets.only(left: 16, top: 24, bottom: 24),
       decoration: BoxDecoration(
-          color: const Color(0xff537D8D),
-          borderRadius: BorderRadius.circular(16)),
+          color: Color(note.color), borderRadius: BorderRadius.circular(16)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           ListTile(
-            title: const Text(
-              "Flutter tips",
-              style: TextStyle(
+            title: Text(
+              note.title,
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 26,
               ),
             ),
             trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  note.delete();
+
+                  BlocProvider.of<NotesCubit>(context).fetchNotes();
+                },
                 icon: const Icon(
                   Icons.delete,
                   color: Colors.black,
@@ -97,7 +100,7 @@ Widget noteItem(BuildContext context) {
             subtitle: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                "Build your career with tharwat samy",
+                note.subTitle,
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.black.withOpacity(.4),
@@ -108,7 +111,7 @@ Widget noteItem(BuildContext context) {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              "May 22 , 2022",
+              note.date,
               style: TextStyle(
                 color: Colors.black.withOpacity(.4),
               ),
@@ -126,13 +129,19 @@ Widget notesListView() {
       List<NoteModel> notes = BlocProvider.of<NotesCubit>(context).notes ?? [];
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: ListView.builder(
-            itemCount: notes.length,
-            padding: EdgeInsets.zero,
-            itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: noteItem(context),
-                )),
+        child: notes.isEmpty
+            ? const Center(
+                child: Text(
+                "There is no Notes ,, add Now 🤩💜!",
+                style: TextStyle(fontSize: 18),
+              ))
+            : ListView.builder(
+                itemCount: notes.length,
+                padding: EdgeInsets.zero,
+                itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: noteItem(context, notes[index]),
+                    )),
       );
     },
   );

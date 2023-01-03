@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:note_app/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:note_app/cubits/cubit/notes_cubit.dart';
 import 'package:note_app/model/note_model.dart';
@@ -12,24 +13,21 @@ class NotesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NotesCubit(),
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-                isScrollControlled: true,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                context: context,
-                builder: (context) {
-                  return const CustomBottomSheet();
-                });
-          },
-          child: const Icon(Icons.add),
-        ),
-        body: const NotesViewBody(),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+              isScrollControlled: true,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              context: context,
+              builder: (context) {
+                return const CustomBottomSheet();
+              });
+        },
+        child: const Icon(Icons.add),
       ),
+      body: const NotesViewBody(),
     );
   }
 }
@@ -45,6 +43,8 @@ class CustomBottomSheet extends StatelessWidget {
           if (state is AddNoteFauiler) {
             debugPrint("error is ${state.errMessage}");
           } else if (state is AddNoteSuccess) {
+            BlocProvider.of<NotesCubit>(context).fetchNotes();
+
             Navigator.pop(context);
           }
         },
@@ -112,11 +112,15 @@ class _AddNoteFormState extends State<AddNoteForm> {
               onTap: () {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
+                  var currentDate = DateTime.now();
 
+                  var formatedCurrenteDate =
+                      DateFormat.yMd().add_jm().format(currentDate);
                   var note = NoteModel(
                       title: title!,
                       subTitle: subTitle!,
-                      date: DateTime.now().toString(),
+                      date:
+                          formatedCurrenteDate /*DateTime.now().toString().substring(0, 10)*/,
                       color: Colors.blue.value);
                   BlocProvider.of<AddNoteCubit>(context).addNote(note);
                 } else {
