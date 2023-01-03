@@ -104,7 +104,11 @@ class _AddNoteFormState extends State<AddNoteForm> {
             },
           ),
           const SizedBox(
-            height: 32,
+            height: 30,
+          ),
+          const ColorsListView(),
+          const SizedBox(
+            height: 10,
           ),
           BlocBuilder<AddNoteCubit, AddNoteState>(
             builder: (context, state) => CustomButton(
@@ -135,6 +139,40 @@ class _AddNoteFormState extends State<AddNoteForm> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ColorsItem extends StatelessWidget {
+  const ColorsItem({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const CircleAvatar(
+      backgroundColor: Colors.blue,
+      radius: 38,
+    );
+  }
+}
+
+class ColorsListView extends StatelessWidget {
+  const ColorsListView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 38 * 2,
+      child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return const ColorsItem();
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(
+              width: 6,
+            );
+          },
+          itemCount: 10),
     );
   }
 }
