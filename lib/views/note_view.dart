@@ -177,9 +177,9 @@ class ColorsListView extends StatefulWidget {
 class _ColorsListViewState extends State<ColorsListView> {
   int currentIndex = 0;
   List<Color> colors = [
-    const Color(0xff320D6D),
+    const Color(0xffB1A3C7),
     const Color(0xffFFBFB7),
-    const Color(0xffFFD447),
+    const Color(0xffC96255),
     const Color(0xff700353),
     const Color(0xffCB98BD),
   ];
@@ -193,6 +193,8 @@ class _ColorsListViewState extends State<ColorsListView> {
             return GestureDetector(
               onTap: () {
                 currentIndex = index;
+
+                BlocProvider.of<AddNoteCubit>(context).color = colors[index];
                 setState(() {});
               },
               child: ColorsItem(
