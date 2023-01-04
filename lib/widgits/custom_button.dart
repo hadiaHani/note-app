@@ -40,3 +40,36 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
+Widget customAppBar(
+    {required String title, icon, required void Function()? onPressed}) {
+  return Row(
+    children: [
+      Text(
+        title,
+        style: const TextStyle(fontSize: 28),
+      ),
+      const Spacer(),
+      customIcon(icon: icon, onPressed: onPressed),
+    ],
+  );
+}
+
+Widget customIcon(
+    {required IconData icon, required void Function()? onPressed}) {
+  return Container(
+    height: 46,
+    width: 46,
+    decoration: BoxDecoration(
+        color: Colors.white.withOpacity(.05),
+        borderRadius: BorderRadius.circular(16)),
+    child: Center(
+      child: IconButton(
+          icon: Icon(
+            icon,
+            size: 28,
+          ),
+          onPressed: onPressed),
+    ),
+  );
+}

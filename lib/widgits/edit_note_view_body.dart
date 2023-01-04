@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app/cubits/cubit/notes_cubit.dart';
 import 'package:note_app/model/note_model.dart';
+import 'package:note_app/widgits/custom_button.dart';
 import 'package:note_app/widgits/custom_text_field.dart';
-import 'package:note_app/widgits/custom_widgit.dart';
+import 'package:note_app/widgits/edit_colors_listview.dart';
 
 class EditNoteViewBody extends StatefulWidget {
   const EditNoteViewBody({Key? key, required this.note}) : super(key: key);
@@ -15,6 +16,16 @@ class EditNoteViewBody extends StatefulWidget {
 
 class _EditNoteViewBodyState extends State<EditNoteViewBody> {
   String? title, content;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController contentController = TextEditingController();
+
+  @override
+  void initState() {
+    titleController.text = widget.note.title;
+    contentController.text = widget.note.subTitle;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +47,14 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
 
                 BlocProvider.of<NotesCubit>(context).fetchNotes();
                 Navigator.pop(context);
+                Navigator.pop(context);
+                showSnackBar(context, "Note Edited Successfully");
               }),
           const SizedBox(
             height: 50,
           ),
           CustomTextField(
-              hint: widget.note.title,
+              controller: titleController,
               onChanged: (value) {
                 title = value;
               }),
@@ -49,11 +62,17 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
             height: 16,
           ),
           CustomTextField(
-            hint: widget.note.subTitle,
+            controller: contentController,
             maxLines: 5,
             onChanged: (value) {
               content = value;
             },
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          EditColorsListView(
+            note: widget.note,
           )
         ],
       ),

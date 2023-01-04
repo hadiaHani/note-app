@@ -4,20 +4,22 @@ import 'package:note_app/constant.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField(
       {super.key,
-      required this.hint,
+      this.hint,
       this.maxLines = 1,
       this.onSaved,
-      this.onChanged});
+      this.onChanged,
+      this.controller});
 
-  final String hint;
+  final String? hint;
   final int maxLines;
-
+  final TextEditingController? controller;
   final void Function(String?)? onSaved;
 
   final Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       onChanged: onChanged,
       onSaved: onSaved,
       validator: (value) {
@@ -47,4 +49,12 @@ class CustomTextField extends StatelessWidget {
           color: color ?? Colors.white,
         ));
   }
+}
+
+void showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+    ),
+  );
 }
